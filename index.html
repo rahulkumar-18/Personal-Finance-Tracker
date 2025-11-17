@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Finance Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1>💰 Personal Finance Tracker</h1>
+                <p class="subtitle">Manage your money wisely</p>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <!-- Dashboard Summary -->
+            <section class="dashboard">
+                <div class="summary-cards">
+                    <div class="card income-card">
+                        <div class="card-icon">📈</div>
+                        <div class="card-content">
+                            <h3>Total Income</h3>
+                            <p class="amount" id="totalIncome">$0.00</p>
+                        </div>
+                    </div>
+                    <div class="card expense-card">
+                        <div class="card-icon">📉</div>
+                        <div class="card-content">
+                            <h3>Total Expenses</h3>
+                            <p class="amount" id="totalExpense">$0.00</p>
+                        </div>
+                    </div>
+                    <div class="card balance-card">
+                        <div class="card-icon">⚖️</div>
+                        <div class="card-content">
+                            <h3>Balance</h3>
+                            <p class="amount" id="balance">$0.00</p>
+                        </div>
+                    </div>
+                    <div class="card savings-card">
+                        <div class="card-icon">🏦</div>
+                        <div class="card-content">
+                            <h3>Savings</h3>
+                            <p class="amount" id="savings">$0.00</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="content-wrapper">
+                <!-- Left Side: Input Form -->
+                <section class="input-section">
+                    <h2>Add Transaction</h2>
+                    <form id="transactionForm" class="form">
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <input type="text" id="description" placeholder="e.g., Groceries, Salary" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="amount">Amount ($)</label>
+                            <input type="number" id="amount" placeholder="0.00" step="0.01" min="0" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="category">Category</label>
+                            <select id="category" required>
+                                <option value="">Select a category</option>
+                                <optgroup label="Income">
+                                    <option value="Salary">Salary</option>
+                                    <option value="Freelance">Freelance</option>
+                                    <option value="Investment">Investment</option>
+                                    <option value="Bonus">Bonus</option>
+                                    <option value="Other Income">Other Income</option>
+                                </optgroup>
+                                <optgroup label="Expenses">
+                                    <option value="Food">Food & Dining</option>
+                                    <option value="Transport">Transport</option>
+                                    <option value="Utilities">Utilities</option>
+                                    <option value="Entertainment">Entertainment</option>
+                                    <option value="Shopping">Shopping</option>
+                                    <option value="Healthcare">Healthcare</option>
+                                    <option value="Education">Education</option>
+                                    <option value="Rent">Rent</option>
+                                    <option value="Insurance">Insurance</option>
+                                    <option value="Other Expense">Other Expense</option>
+                                </optgroup>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="type">Type</label>
+                            <div class="radio-group">
+                                <label class="radio-label">
+                                    <input type="radio" name="type" value="income" required>
+                                    <span>Income</span>
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio" name="type" value="expense" required>
+                                    <span>Expense</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="date">Date</label>
+                            <input type="date" id="date" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="notes">Notes (Optional)</label>
+                            <textarea id="notes" placeholder="Add any notes..." rows="3"></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Add Transaction</button>
+                    </form>
+
+                    <!-- Quick Actions -->
+                    <div class="quick-actions">
+                        <h3>Quick Actions</h3>
+                        <button class="btn btn-secondary" id="exportBtn">📥 Export to CSV</button>
+                        <button class="btn btn-danger" id="clearBtn">🗑️ Clear All Data</button>
+                    </div>
+                </section>
+
+                <!-- Right Side: Charts and Analysis -->
+                <section class="analysis-section">
+                    <!-- Charts -->
+                    <div class="charts-container">
+                        <div class="chart-wrapper">
+                            <h3>Expense Distribution</h3>
+                            <canvas id="expenseChart"></canvas>
+                        </div>
+                        <div class="chart-wrapper">
+                            <h3>Income vs Expenses</h3>
+                            <canvas id="comparisonChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Filters -->
+                    <div class="filters">
+                        <h3>Filters</h3>
+                        <div class="filter-group">
+                            <label for="filterType">Type:</label>
+                            <select id="filterType">
+                                <option value="">All</option>
+                                <option value="income">Income</option>
+                                <option value="expense">Expense</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="filterCategory">Category:</label>
+                            <select id="filterCategory">
+                                <option value="">All Categories</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="filterMonth">Month:</label>
+                            <select id="filterMonth">
+                                <option value="">All Months</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-secondary btn-small" id="resetFiltersBtn">Reset Filters</button>
+                    </div>
+
+                    <!-- Monthly Summary -->
+                    <div class="monthly-summary">
+                        <h3>Monthly Summary</h3>
+                        <div id="monthlySummary" class="summary-list"></div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Transactions List -->
+            <section class="transactions-section">
+                <div class="transactions-header">
+                    <h2>Recent Transactions</h2>
+                    <div class="sort-options">
+                        <label for="sortBy">Sort by:</label>
+                        <select id="sortBy">
+                            <option value="date-desc">Date (Newest)</option>
+                            <option value="date-asc">Date (Oldest)</option>
+                            <option value="amount-desc">Amount (High to Low)</option>
+                            <option value="amount-asc">Amount (Low to High)</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="transactionsList" class="transactions-list">
+                    <p class="empty-message">No transactions yet. Add one to get started!</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal for editing transactions -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Edit Transaction</h2>
+            <form id="editForm" class="form">
+                <div class="form-group">
+                    <label for="editDescription">Description</label>
+                    <input type="text" id="editDescription" required>
+                </div>
+                <div class="form-group">
+                    <label for="editAmount">Amount ($)</label>
+                    <input type="number" id="editAmount" step="0.01" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="editCategory">Category</label>
+                    <select id="editCategory" required></select>
+                </div>
+                <div class="form-group">
+                    <label for="editType">Type</label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="editType" value="income" required>
+                            <span>Income</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="editType" value="expense" required>
+                            <span>Expense</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="editDate">Date</label>
+                    <input type="date" id="editDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="editNotes">Notes</label>
+                    <textarea id="editNotes" rows="3"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <button type="button" class="btn btn-danger" id="deleteBtn">Delete Transaction</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
